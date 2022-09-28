@@ -78,11 +78,11 @@ normalMap.numberDict = {
 	12: 0
 }
 normalMap.coordinatesArray = [
-	[-4,2],[4,2],[-4,-2],
+	[-4,-2],[4,-2],[0,4],
 	[-2,3],[-2,1],[-2,-1],[-2,-3],
-	[0,4],[0,2],[0,0],[0,-2],[0,-4],
+	[-4,2],[0,2],[0,0],[0,-2],[0,-4],
 	[2,3],[2,1],[2,-1],[2,-3],
-	[-4,0],[4,0],[4,-2]
+	[-4,0],[4,0],[4,2]
 ];
 
 var expandedMap = new MapDefinition();
@@ -301,7 +301,7 @@ CatanMap.prototype.generate = function() {
 		for (var i = 0; i < numDeserts; i += 1) {
 			var desertHexTile = new HexTile();
 			newCoords = tileCoordinates.setFixed(0, true);
-			desertHexTile.setNumber(newCoords);
+			desertHexTile.setNumber("City");
 			desertHexTile.setCoordinate.apply(
 				desertHexTile,
 				newCoords
@@ -335,7 +335,6 @@ CatanMap.prototype.generate = function() {
 				var tmpCoords = [];
 				do {
 					newCoords = tileCoordinates.random(true);
-					newHexTile.setNumber(newCoords);
 					newHexTile.setCoordinate.apply(
 						newHexTile,
 						newCoords
@@ -348,7 +347,6 @@ CatanMap.prototype.generate = function() {
 				tileCoordinates = tileCoordinates.concat(tmpCoords);
 			} else {
 				newCoords = tileCoordinates.random(true);
-				newHexTile.setNumber(newCoords);
 				newHexTile.setCoordinate.apply(
 					newHexTile,
 					newCoords
