@@ -517,8 +517,14 @@ HexTile.prototype.drawNumber = function() {
 	drawingContext.lineWidth = 3;
 	
 	drawingContext.beginPath();
-	drawingContext.arc(this.xCenter, this.yCenter, 0.375 * size,
-		0, 2 * Math.PI, false);
+	if (this.number == "City") {
+		drawingContext.arc(this.xCenter, this.yCenter, 0.5 * size,
+			0, 2 * Math.PI, false);
+	}
+	else {
+		drawingContext.arc(this.xCenter, this.yCenter, 0.375 * size,
+			0, 2 * Math.PI, false);
+	}
 	drawingContext.closePath();
 	
 	drawingContext.fill();
