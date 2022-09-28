@@ -130,7 +130,7 @@ function init() {
 		var button = $('button#gen-map-button')[0];
 		$(button).click(generate);
 		button.disabled = false;
-		button.innerHTML = "Click to generate.";
+		button.innerHTML = "Сгенериовать игру";
 	});
 	
 	addCanvas();
