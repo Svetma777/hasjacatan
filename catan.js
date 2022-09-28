@@ -343,26 +343,34 @@ CatanMap.prototype.generate = function() {
 
 			var invalid;
 			
-			if ( newHexTile.isHighlyProductive()) {
-				var tmpCoords = [];
-				do {
-					newCoords = tileCoordinates.random(true);
-					newHexTile.setCoordinate.apply(
-						newHexTile,
-						newCoords
-					);
-					invalid = this.hasHighlyProductiveNeighbors(newHexTile) && !this.allowProductiveNeighbours;
-					if (invalid) {
-						tmpCoords.push(newCoords);
-					}
-				} while ( invalid );
-				tileCoordinates = tileCoordinates.concat(tmpCoords);
-			} else {
+			if (this.allowProductiveNeighbours) {
 				newCoords = tileCoordinates.random(true);
 				newHexTile.setCoordinate.apply(
 					newHexTile,
 					newCoords
 				);
+			} else {
+				if ( newHexTile.isHighlyProductive()) {
+					var tmpCoords = [];
+					do {
+						newCoords = tileCoordinates.random(true);
+						newHexTile.setCoordinate.apply(
+							newHexTile,
+							newCoords
+						);
+						invalid = this.hasHighlyProductiveNeighbors(newHexTile);
+						if (invalid) {
+							tmpCoords.push(newCoords);
+						}
+					} while ( invalid );
+					tileCoordinates = tileCoordinates.concat(tmpCoords);
+				} else {
+					newCoords = tileCoordinates.random(true);
+					newHexTile.setCoordinate.apply(
+						newHexTile,
+						newCoords
+					);
+				}
 			}
 			
 			this.hexTiles.push(newHexTile);
