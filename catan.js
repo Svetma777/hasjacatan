@@ -193,6 +193,7 @@ function loadImages(callback) {
 }
 
 function generate() {
+	catanMap = new CatanMap();
 	
 	var mapDef;
 	var allowProductiveNeighbours;
