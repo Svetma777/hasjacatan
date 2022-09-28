@@ -343,7 +343,7 @@ CatanMap.prototype.generate = function() {
 
 			var invalid;
 			
-			if ( newHexTile.isHighlyProductive() ) {
+			if ( newHexTile.isHighlyProductive() && !this.allowProductiveNeighbours) {
 				var tmpCoords = [];
 				do {
 					newCoords = tileCoordinates.random(true);
