@@ -335,6 +335,7 @@ CatanMap.prototype.generate = function() {
 				var tmpCoords = [];
 				do {
 					newCoords = tileCoordinates.random(true);
+					newHexTile.setNumber(newCoords);
 					newHexTile.setCoordinate.apply(
 						newHexTile,
 						newCoords
@@ -347,6 +348,7 @@ CatanMap.prototype.generate = function() {
 				tileCoordinates = tileCoordinates.concat(tmpCoords);
 			} else {
 				newCoords = tileCoordinates.random(true);
+				newHexTile.setNumber(newCoords);
 				newHexTile.setCoordinate.apply(
 					newHexTile,
 					newCoords
