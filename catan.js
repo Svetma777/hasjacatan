@@ -82,7 +82,7 @@ normalMap.coordinatesArray = [
 	[-2,3],[-2,1],[-2,-1],[-2,-3],
 	[0,4],[0,2],[0,0],[0,-2],[0,-4],
 	[2,3],[2,1],[2,-1],[2,-3],
-	[4,2],[4,0]
+	[4,2],[4,0],[4,-2]
 ];
 
 var expandedMap = new MapDefinition();
@@ -300,7 +300,7 @@ CatanMap.prototype.generate = function() {
 		
 		for (var i = 0; i < numDeserts; i += 1) {
 			var desertHexTile = new HexTile();
-			newCoords = tileCoordinates.random(true);
+			newCoords = tileCoordinates.setFixed(i, true);
 			desertHexTile.setCoordinate.apply(
 				desertHexTile,
 				newCoords
@@ -548,6 +548,15 @@ Array.prototype.random = function(removeElem) {
 	}
 	return val;
 }
+
+Array.prototype.setFixed = function(idx, removeElem) {
+	var val = this[idx];
+	if (removeElem) {
+		this.splice(idx,1);
+	}
+	return val;
+}
+
 Array.prototype.copy = function() {
 	return this.slice();
 }
