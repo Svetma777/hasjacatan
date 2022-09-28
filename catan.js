@@ -195,6 +195,8 @@ function loadImages(callback) {
 function generate() {
 	
 	var mapDef;
+	var allowProductiveNeighbours;
+	
 	switch($("input:radio['name=game-type']:checked").val()) {
 		case "expanded":
 			mapDef = expandedMap;
@@ -203,7 +205,15 @@ function generate() {
 			mapDef = normalMap;
 	}
 	
-	catanMap.defineMap(mapDef);
+	switch($("input:radio['name=higly-productive-neighbours']:checked").val()) {
+		case "yes":
+			allowProductiveNeighbours = true;
+			break;
+		default:
+			allowProductiveNeighbours = false;
+	}
+	
+	catanMap.defineMap(mapDef, allowProductiveNeighbours);
 	catanMap.generate();
 	catanMap.resize();
 	catanMap.draw();
@@ -234,16 +244,18 @@ MapDefinition.prototype.sumDictVals = function(dict) {
 function CatanMap() {
 	
 	this.mapDefinition = null;
+	this.allowProductiveNeighbours = null;
 	this.hexTiles = null;
 	this.coordToTile = {};
 	this.coordSpan = [0,0];
 	
 }
-CatanMap.prototype.defineMap = function(mapDefinition) {
+CatanMap.prototype.defineMap = function(mapDefinition, allowProductiveNeighbours) {
 	
 	if (mapDefinition.checkValidity()) {
 		
 		this.mapDefinition = mapDefinition;
+		this.allowProductiveNeighbours = allowProductiveNeighbours;
 		
 		var coordRangeX = [0,0];
 		var coordRangeY = [0,0];
