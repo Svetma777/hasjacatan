@@ -219,6 +219,11 @@ function generate() {
 	catanMap.resize();
 	catanMap.draw();
 
+	if ($('#cat-image').attr('src') == "images/hasja.jpg") {
+		$('#cat-image').attr('src', 'images/per4ik.jpg');
+	} else {
+		$('#cat-image').attr('src', 'images/hasja.jpg');
+	}
 }
 
 function MapDefinition() {
