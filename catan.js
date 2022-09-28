@@ -219,6 +219,7 @@ function generate() {
 	catanMap.resize();
 	catanMap.draw();
 	
+	$("#cat-image").attr('src');
 }
 
 function MapDefinition() {
