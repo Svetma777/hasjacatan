@@ -301,6 +301,7 @@ CatanMap.prototype.generate = function() {
 		for (var i = 0; i < numDeserts; i += 1) {
 			var desertHexTile = new HexTile();
 			newCoords = tileCoordinates.setFixed(0, true);
+			desertHexTile.setNumber(newCoords);
 			desertHexTile.setCoordinate.apply(
 				desertHexTile,
 				newCoords
