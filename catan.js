@@ -197,7 +197,7 @@ function generate() {
 	var mapDef;
 	var allowProductiveNeighbours;
 	
-	switch($("input:radio['name=game-type']:checked").val()) {
+	switch($('input:radio[name="game-type"]:checked').val()) {
 		case "expanded":
 			mapDef = expandedMap;
 			break;
@@ -205,7 +205,7 @@ function generate() {
 			mapDef = normalMap;
 	}
 	
-	switch($("input:radio['name=higly-productive-neighbours']:checked").val()) {
+	switch($('input:radio[name="higly-productive-neighbours"]:checked').val()) {
 		case "yes":
 			allowProductiveNeighbours = true;
 			break;
