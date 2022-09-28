@@ -58,15 +58,15 @@ var catanMap = new CatanMap();
 
 var normalMap = new MapDefinition();
 normalMap.resourceDict = {
-	"desert": 1,
+	"desert": 3,
 	"wood": 4,
 	"clay": 3,
-	"wool": 4,
-	"grain": 4,
+	"wool": 3,
+	"grain": 3,
 	"ore": 3
 };
 normalMap.numberDict = {
-	2: 1,
+	2: 0,
 	3: 2,
 	4: 2,
 	5: 2,
@@ -75,7 +75,7 @@ normalMap.numberDict = {
 	9: 2,
 	10: 2,
 	11: 2,
-	12: 1
+	12: 0
 }
 normalMap.coordinatesArray = [
 	[-4,2],[-4,0],[-4,-2],
