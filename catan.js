@@ -343,7 +343,7 @@ CatanMap.prototype.generate = function() {
 
 			var invalid;
 			
-			if ( newHexTile.isHighlyProductive() && !this.allowProductiveNeighbours) {
+			if ( newHexTile.isHighlyProductive()) {
 				var tmpCoords = [];
 				do {
 					newCoords = tileCoordinates.random(true);
@@ -351,7 +351,7 @@ CatanMap.prototype.generate = function() {
 						newHexTile,
 						newCoords
 					);
-					invalid = this.hasHighlyProductiveNeighbors(newHexTile);
+					invalid = this.hasHighlyProductiveNeighbors(newHexTile) && !this.allowProductiveNeighbours;
 					if (invalid) {
 						tmpCoords.push(newCoords);
 					}
