@@ -536,7 +536,10 @@ HexTile.prototype.drawNumber = function() {
 	drawingContext.textAlign = "center";
 	if ( this.isHighlyProductive() ) {
 		drawingContext.fillStyle = "#FF0000";
-	} else {
+	} else if (this.number == "City") {
+		drawingContext.fillStyle = "#2986CC";
+	}
+	else {
 		drawingContext.fillStyle = "#000000";
 	}
 	drawingContext.fillText(
