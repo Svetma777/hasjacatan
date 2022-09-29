@@ -294,12 +294,15 @@ function generate() {
 	catanMap.resize();
 	catanMap.draw();
 
-	if ($('#cat-image').attr('src') == "images/hasja.png") {
-		$('#cat-image').attr('src', 'images/per4ik.png');
-	} else if ($('#cat-image').attr('src') == "images/per4ik.png") {
-		$('#cat-image').attr('src', 'images/korsar.png');
-	} else {
-		$('#cat-image').attr('src', 'images/hasja.png');
+	switch ($('#cat-image').attr('src')) {
+		case "images/hasja.png":
+			$('#cat-image').attr('src', 'images/per4ik.png');
+			break;
+		case "images/per4ik.png":
+			$('#cat-image').attr('src', 'images/korsar.png');
+			break;
+		default:
+			$('#cat-image').attr('src', 'images/hasja.png');
 	}
 }
 
