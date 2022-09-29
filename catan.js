@@ -32,6 +32,12 @@ var resourceTypeToImageCanvas = {
 	"desert": null
 };
 
+var catsProfileToImageCanvas = {
+	"hasjacircle": null,
+	"per4ikcircle": null,
+	"korsarcircle": null
+};
+
 //var allImagesLoaded = false;
 
 // ----- Grid layout globals -----
@@ -85,6 +91,35 @@ normalMap.coordinatesArray = [
 	[-4,0],[4,0],[4,2]
 ];
 
+var noResourceMap = new MapDefinition();
+noResourceMap.resourceDict = {
+	"desert": 3,
+	"wood": 0,
+	"clay": 0,
+	"wool": 16,
+	"grain": 0,
+	"ore": 0
+};
+noResourceMap.numberDict = {
+	2: 0,
+	3: 2,
+	4: 2,
+	5: 2,
+	6: 2,
+	8: 2,
+	9: 2,
+	10: 2,
+	11: 2,
+	12: 0
+}
+noResourceMap.coordinatesArray = [
+	[-4,-2],[4,-2],[0,4],
+	[-2,3],[-2,1],[-2,-1],[-2,-3],
+	[-4,2],[0,2],[0,0],[0,-2],[0,-4],
+	[2,3],[2,1],[2,-1],[2,-3],
+	[-4,0],[4,0],[4,2]
+];
+
 var expandedMap = new MapDefinition();
 expandedMap.resourceDict = {
 	"desert": 2,
@@ -131,6 +166,8 @@ function init() {
 		$(button).click(generate);
 		button.disabled = false;
 		button.innerHTML = "Сгенериовать игру";
+		
+		initEmptyMap()
 	});
 	
 	addCanvas();
@@ -166,9 +203,16 @@ function loadImages(callback) {
 
 	var rTypes = [];
 	var imgPaths = [];
+	var catTypes = [];
+	var catImgPaths = [];
+	
 	for (var key in resourceTypeToImageCanvas) {
 		rTypes.push(key);
 		imgPaths.push("images/"+key+".png");
+	}
+	for (var key in catsProfileToImageCanvas) {
+		catTypes.push(key);
+		catImgPaths.push("images/"+key+".png");
 	}
 	
 	preloadImages(imgPaths, function(images) {
@@ -190,6 +234,37 @@ function loadImages(callback) {
 		
 	});
 	
+	preloadImages(catImgPaths, function(images) {
+		
+		for (var i = 0; i < catImgPaths.length; i += 1) {
+			//resourceTypeToImage[ rTypes[i] ] = images[i];
+			var img = images[i];
+			var imgCanvas = document.createElement("canvas");
+			var imgContext = imgCanvas.getContext("2d");
+			
+			imgCanvas.width = img.width;
+			imgCanvas.height = img.height;
+			imgContext.drawImage(img, 0, 0);
+			
+			catsProfileToImageCanvas[ catTypes[i] ] = imgCanvas;
+		}
+		
+		callback();
+		
+	});
+	
+}
+
+function initEmptyMap() {
+	catanMap = new CatanMap();
+	
+	var mapDef = noResourceMap;
+	var allowProductiveNeighbours  = false;
+	
+	catanMap.defineMap(mapDef, allowProductiveNeighbours);
+	catanMap.generate(false);
+	catanMap.resize();
+	catanMap.draw();
 }
 
 function generate() {
@@ -199,8 +274,8 @@ function generate() {
 	var allowProductiveNeighbours;
 	
 	switch($('input:radio[name="game-type"]:checked').val()) {
-		case "expanded":
-			mapDef = expandedMap;
+		case "noresource":
+			mapDef = noResourceMap;
 			break;
 		default:
 			mapDef = normalMap;
@@ -219,10 +294,12 @@ function generate() {
 	catanMap.resize();
 	catanMap.draw();
 
-	if ($('#cat-image').attr('src') == "images/hasja.jpg") {
-		$('#cat-image').attr('src', 'images/per4ik.jpg');
+	if ($('#cat-image').attr('src') == "images/hasja.png") {
+		$('#cat-image').attr('src', 'images/per4ik.png');
+	} else if ($('#cat-image').attr('src') == "images/per4ik.png") {
+		$('#cat-image').attr('src', 'images/korsar.png');
 	} else {
-		$('#cat-image').attr('src', 'images/hasja.jpg');
+		$('#cat-image').attr('src', 'images/hasja.png');
 	}
 }
 
@@ -287,7 +364,7 @@ CatanMap.prototype.defineMap = function(mapDefinition, allowProductiveNeighbours
 		console.log("Invalid map definition.");
 	}
 }
-CatanMap.prototype.generate = function() {
+CatanMap.prototype.generate = function(needNumbers = true) {
 	
 	if (this.mapDefinition) {
 		
@@ -320,6 +397,7 @@ CatanMap.prototype.generate = function() {
 			var desertHexTile = new HexTile();
 			newCoords = tileCoordinates.setFixed(0, true);
 			desertHexTile.setNumber("City");
+			desertHexTile.setCityNumber(i);
 			desertHexTile.setCoordinate.apply(
 				desertHexTile,
 				newCoords
@@ -344,7 +422,9 @@ CatanMap.prototype.generate = function() {
 		for (var i = 0; i < (numTiles - numDeserts); i += 1) {
 			
 			var newHexTile = new HexTile();
-			newHexTile.setNumber(tileNumbers[i]);
+			if (needNumbers) {
+				newHexTile.setNumber(tileNumbers[i]);
+			}
 			newHexTile.setResourceType(tileTypes.random(true));
 
 			var invalid;
@@ -450,6 +530,7 @@ function HexTile() {
 	this.xCenter;
 	this.yCenter;
 	this.resourceType = "none";
+	this.cityNumber = 9999;
 	this.fillStyle = defaultFillStyle;
 	this.number;
 }
@@ -470,6 +551,9 @@ HexTile.prototype.isHighlyProductive = function() {
 }
 HexTile.prototype.setNumber = function(number) {
 	this.number = number;
+}
+HexTile.prototype.setCityNumber = function(cityNumber) {
+	this.cityNumber = cityNumber;
 }
 HexTile.prototype.setCoordinate = function(x,y) {
 	this.gridX = x;
@@ -568,11 +652,38 @@ HexTile.prototype.drawNumber = function() {
 	else {
 		drawingContext.fillStyle = "#000000";
 	}
-	drawingContext.fillText(
-		this.number.toString(),
-		this.xCenter,
-		this.yCenter + Math.ceil( 0.85 * fontSizePt/2 )
-	);
+	
+	if (this.number == "City" && this.cityNumber < 3) {
+		var imgCanvas;
+		
+		switch (this.cityNumber) {
+			case 0:
+				imgCanvas = catsProfileToImageCanvas["hasjacircle"];
+				break;
+				
+			case 1:
+				imgCanvas = catsProfileToImageCanvas["per4ikcircle"];
+			break;
+			
+			default:
+				imgCanvas = catsProfileToImageCanvas["korsarcircle"];
+		}
+		
+		drawingContext.drawImage(
+				imgCanvas,
+				0, 0, imgCanvas.width, imgCanvas.height, 
+				this.xCenter - (0.45*size),
+				this.yCenter - (0.34*dy),
+				0.9*size,
+				0.9*dy
+			);
+	} else {
+		drawingContext.fillText(
+			this.number.toString(),
+			this.xCenter,
+			this.yCenter + Math.ceil( 0.85 * fontSizePt/2 )
+		);
+	}
 	
 }
 
