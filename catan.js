@@ -172,6 +172,7 @@ function init() {
 	
 	addCanvas();
 	
+	generateLeftCatImage();
 }
 
 function preloadImages(arr, callback){
@@ -294,16 +295,25 @@ function generate() {
 	catanMap.resize();
 	catanMap.draw();
 
-	switch ($('#cat-image').attr('src')) {
-		case "images/hasja.png":
-			$('#cat-image').attr('src', 'images/per4ik.png');
-			break;
-		case "images/per4ik.png":
-			$('#cat-image').attr('src', 'images/korsar.png');
-			break;
-		default:
-			$('#cat-image').attr('src', 'images/hasja.png');
+	generateLeftCatImage();
+}
+
+function generateLeftCatImage(){
+	var switchNumber = getRandomInt(3);
+	
+	console.log(switchNumber);
+	
+	if (switchNumber == 0) {
+		$('#cat-image').attr('src', 'images/per4ik.png');
+	} else if (switchNumber == 1) {
+		$('#cat-image').attr('src', 'images/korsar.png');
+	} else {
+		$('#cat-image').attr('src', 'images/hasja.png');
 	}
+}
+
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
 }
 
 function MapDefinition() {
